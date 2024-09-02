@@ -1,0 +1,20 @@
+-- aula 26/08
+-- criar uma tabela
+create database banco;
+
+-- criar a tabelapessoas
+create table minhatabela (
+	nome varchar(20)
+);
+
+create table pessoas (
+	nome varchar(20),
+    numero_sorte int,
+    data_nascimento date
+);
+
+-- adicionar coluna em uma tabela
+alter table pessoas add column profissao varchar(20);
+
+-- remover uma tabela
+drop table minhatabela;
