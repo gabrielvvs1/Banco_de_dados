@@ -1,0 +1,29 @@
+-- aula 02/09
+-- objetivos: CREAT, DROP, SELECT, INSERT UPDATE E DELETE e CONSTRAINTS
+
+-- excluir coluna
+alter table pessoas drop column data_nascimento;
+
+-- alterar atributo:
+alter table pessoas change profissao sobrenome varchar(40);
+
+-- inserir registros INSERT
+insert into pessoas (nome, numero_sorte, sobrenome)
+values ('Gabriel', 15, 'Vidal'); -- passando os valores de pessoas 
+
+insert into pessoas (nome, numero_sorte, sobrenome)
+values ('Fulano', 23, 'sillva'); -- passando o registro de outra pessoa
+
+-- seleção (recuperar os dados da seleção)
+select * from pessoas; -- o '*' seleciona todos as colunas da tabela pessoa
+select nome, sobrenome from pessoas; -- seleciona somente os nomes e o sobrenomes das pessoas
+select * from pessoas where numero_sorte = 15; -- filtrando de forma especifica onde esta o numero da sorte '15'
+
+-- update (altera o registro da tabela)
+SET SQL_SAFE_UPDATES = 0; -- desabilita o modo de segurança para que o update possa ser realizado
+update pessoas set numero_sorte = 10 where nome = 'Gabriel'; -- altera o numero da sorte do nome Gabriel na tabela pessoas 
+select * from pessoas; -- exibe a tabela com o numero da sorte de 'Gabriel' alterado de 15 para 10
+
+-- delete
+delete from pessoas where nome = 'Gabriel'; -- deleta a pessoa 'Gabriel' da tabela pessoas 
+select * from pessoas; -- exibe a tabela com a pessoa 'Gabriel' deletado
