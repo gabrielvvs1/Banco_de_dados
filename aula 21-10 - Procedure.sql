@@ -1,48 +1,47 @@
--- 21/10 store procedure (procedimento armazenado) -- funçoes dentro do banco de dados
+-- Aula 21/10/2024 - Stored Procedure
 
-create database loja2;
+create database loja;
 
-create table Cliente(
+create table Cliente (
 	idCliente int auto_increment primary key,
     nome varchar(100),
     email varchar(100),
     dataRegistro date
-    );
+);
 
 -- criar uma procedure
 DELIMITER //
-CREATE PROCEDURE Helloworld()
+CREATE PROCEDURE HelloWorld()
 BEGIN
-	SELECT "OLA MUNDO!!" as Mensagem;
+	SELECT "Olá Mundo!!" as Mensagem;
 END //
 DELIMITER ;
 
 -- chamar a procedure
-CALL Helloworld;
+CALL HelloWorld;
 
--- ###################################
--- Inserir CLiente
+-- ####################################
 DELIMITER //
 CREATE PROCEDURE InserirCliente(
 	IN p_nome varchar(100),
     IN p_email varchar(100),
-    IN dataRegistro date
+    IN p_dataRegistro date 
 )
 BEGIN
-	INSERT INTO Cliente (nome, email, dataRegistro)
-    VALUES(p_nome, p_email, p_dataRegistro);
+	INSERT INTO cliente (nome, email, dataRegistro)
+    VALUES (p_nome, p_email, p_dataRegistro);
 END //
 DELIMITER ;
 
-CALL InserirCliente('Fulano Silva', 'fulano@email.com', '2024/10/21'); -- nao rodou
-select *from cliente; 
+CALL InserirCliente('Fulano Silva', 'fulano@email.com', '2024-10-21');
+select * from cliente;
 
---#####################################
--- Atualiza os dados dos clientes
+-- ####################################
+-- atualizar os dados do cliente
 DELIMITER //
 CREATE PROCEDURE AtualizarCliente(
 	IN p_idCliente int,
-	IN p_nome varchar(100),
+    IN p_nome varchar(100),
     IN p_email varchar(100)
 )
 BEGIN
@@ -52,83 +51,61 @@ BEGIN
 END //
 DELIMITER ;
 
-CALL InserirCliente('Ciclano', 'ciclano@email', '2024-10-21');
-SELECT * from cliente;
+CALL InserirCLiente('Ciclano', 'ciclano@email.com', '2024-10-21');
+select * from cliente;
 
-CALL AtualizarCliente(2, 'Ciclano Carvalho', 'ciclano.carvalho@email'); -- atualizando os dados do ciclano pelo ID
+CALL AtualizarCliente(2, 'Ciclano Carvalho', 'ciclano.carvalho@email.com');
 
--- ##################################
--- Buscar um Cliente
-DELIMITER // 
+-- ####################################
+-- buscar um cliente
+DELIMITER //
 CREATE PROCEDURE BuscarCliente(
 	IN p_idCliente int,
     OUT p_nome varchar(100)
 )
-BEGIN 
-	SELECT nome INTO  p_nome
+BEGIN
+	SELECT nome INTO p_nome
     FROM cliente
     WHERE idCliente = p_idCliente;
-END // 
+END //
 DELIMITER ;
 
 -- chamar a procedure
--- criar variavel 
-SET @nomeCliente = ' ';
-CALL BuscarCLiente(2, @nome); -- busca o cliente pelo ID 2, e retorna o nome
-SELECT @nomeCliente;
+SET @nomeCliente = ''; -- criar a variável
+CALL BuscarCliente(3, @nomeCliente); -- chamar a procedure
+SELECT @nomeCliente; -- visualizar o conteúdo da variável
 
--- ###########################
--- Exclui o cliente: O USUARIO PASSE O ID
+-- ####################################
+-- excluir o cliente: usuario passe o ID
 DELIMITER //
-CREATE PROCEDURE ExcluirCliente(
+CREATE PROCEDURE ExcluirCliente (
 	IN p_idCliente int
 )
 BEGIN
-	Delete from  cliente
+	DELETE FROM cliente
     WHERE idCliente = p_idCliente;
 END //
 DELIMITER ;
 
 -- chamar a procedure
-CALL ExcluiCliente(2); -- exclui o cliente 2
+CALL ExcluirCliente(2);
 select * from cliente;
 
-
--- ###########################
--- Exibi a quantidade de clientes -- procedure de saida
+-- exibir a quantidade de clientes (ex.: 2)
 DELIMITER //
-CREATE PROCEDURE ObterTotalCliente(
+CREATE PROCEDURE ObterTotalClientes(
 	OUT p_totalClientes int
 )
 BEGIN
-	SELECT COUNT(*) INTO p_totalCliente
+	SELECT COUNT(*) INTO p_totalClientes
     FROM cliente;
 END //
-DELIMITER ;
-
--- variavel
-SET @totalClientes = 0;
-CALL ObterTotalCliente(@totalClientes);
-select @totalClientes;
+DELIMITER ; 
 
 
+SET @totalClientes = 0; -- variavel
+CALL ObterTotalClientes(@totalClientes); -- chamar a procedure
+select @totalClientes; -- visualizar o resultado da variável
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+show procedure status; -- visualizar todas as procedures criadas
